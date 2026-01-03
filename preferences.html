@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scenario Builder Preferences</title>
+  <title>تنظیمات سازنده سناریو</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     /* Basic, beginner-friendly styling to keep the page readable. */
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
       margin: 20px;
-      line-height: 1.6;
+      line-height: 1.8;
       background: #f7f7f7;
+      direction: rtl;
     }
 
     .container {
@@ -20,6 +24,7 @@
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: right;
     }
 
     h1 {
@@ -32,7 +37,7 @@
 
     label {
       display: block;
-      font-weight: bold;
+      font-weight: 600;
     }
 
     input[type="text"] {
@@ -42,6 +47,7 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 16px;
+      text-align: right;
     }
 
     .error {
@@ -53,6 +59,7 @@
 
     .actions {
       margin-top: 20px;
+      text-align: right;
     }
 
     button {
@@ -94,50 +101,49 @@
 </head>
 <body>
   <div class="container">
-    <h1>Preferences</h1>
+    <h1>تنظیمات</h1>
     <p>
-      Enter who you are creating content for, the tone you want to use,
-      the format you are targeting, and the language. All fields are required.
+      مشخص کنید برای چه کسی محتوا تولید می‌کنید، لحن مدنظر چیست، چه قالبی را هدف گرفته‌اید و زبان خروجی چیست. همه فیلدها الزامی هستند.
     </p>
 
     <form id="preferences-form" novalidate>
       <div class="field">
-        <label for="audience">Audience</label>
-        <input type="text" id="audience" name="audience" placeholder="e.g., college students on TikTok" />
+        <label for="audience">مخاطب</label>
+        <input type="text" id="audience" name="audience" placeholder="مثلاً: دانشجویان دانشگاه در تیک‌تاک" />
         <div class="error" id="audience-error"></div>
       </div>
 
       <div class="field">
-        <label for="tone">Tone</label>
-        <input type="text" id="tone" name="tone" placeholder="e.g., friendly and encouraging" />
+        <label for="tone">لحن</label>
+        <input type="text" id="tone" name="tone" placeholder="مثلاً: دوستانه و تشویق‌کننده" />
         <div class="error" id="tone-error"></div>
       </div>
 
       <div class="field">
-        <label for="format">Format</label>
-        <input type="text" id="format" name="format" placeholder="e.g., short vertical video" />
+        <label for="format">قالب</label>
+        <input type="text" id="format" name="format" placeholder="مثلاً: ویدیوی عمودی کوتاه" />
         <div class="error" id="format-error"></div>
       </div>
 
       <div class="field">
-        <label for="language">Language</label>
-        <input type="text" id="language" name="language" placeholder="e.g., English" />
+        <label for="language">زبان</label>
+        <input type="text" id="language" name="language" placeholder="مثلاً: فارسی" />
         <div class="error" id="language-error"></div>
       </div>
 
       <div class="actions">
-        <button type="submit">Save preferences</button>
+        <button type="submit">ذخیره تنظیمات</button>
       </div>
     </form>
 
     <div class="summary" id="preferences-summary" aria-live="polite">
-      <h2>Preferences summary</h2>
-      <p id="summary-empty">Nothing saved yet. Fill out the form and click "Save preferences."</p>
+      <h2>خلاصه تنظیمات</h2>
+      <p id="summary-empty">هنوز چیزی ذخیره نشده است. فرم را پر کنید و روی «ذخیره تنظیمات» بزنید.</p>
       <ul class="summary-list" id="summary-list" hidden>
-        <li><strong>Audience:</strong> <span id="summary-audience"></span></li>
-        <li><strong>Tone:</strong> <span id="summary-tone"></span></li>
-        <li><strong>Format:</strong> <span id="summary-format"></span></li>
-        <li><strong>Language:</strong> <span id="summary-language"></span></li>
+        <li><strong>مخاطب:</strong> <span id="summary-audience"></span></li>
+        <li><strong>لحن:</strong> <span id="summary-tone"></span></li>
+        <li><strong>قالب:</strong> <span id="summary-format"></span></li>
+        <li><strong>زبان:</strong> <span id="summary-language"></span></li>
       </ul>
     </div>
   </div>
@@ -197,7 +203,7 @@
       fields.forEach((fieldName) => {
         if (!data[fieldName] || !data[fieldName].trim()) {
           const errorBox = document.getElementById(`${fieldName}-error`);
-          errorBox.textContent = 'This field is required.';
+          errorBox.textContent = 'پر کردن این فیلد الزامی است.';
           isValid = false;
         }
       });

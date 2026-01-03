@@ -44,7 +44,7 @@ To capture basic preferences (audience, tone, format, language) and keep them be
 
 ### How to run it
 1. Open the `preferences.html` file in your web browser (double-click it or right-click and choose “Open with browser”).
-2. You will see four text fields and a **Save preferences** button.
+2. You will see four text fields and a **Save preferences** button. The interface is now in فارسی (Persian) with راست‌به‌چپ (RTL) layout and a Persian-friendly font for easier reading.
 
 ### How to use and test it
 1. Fill in all four fields (all are required).

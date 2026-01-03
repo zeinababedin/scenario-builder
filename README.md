@@ -38,3 +38,19 @@ Each file has comments in plain English explaining its purpose. The goal is clar
 3. Open `storyboards/storyboard_outline.md` and outline how that scenario could play out frame by frame.
 
 Take it step by step. The project will stay simple and grow gradually.
+
+## New: Beginner-friendly preferences page
+To capture basic preferences (audience, tone, format, language) and keep them between visits, use the new `preferences.html` page.
+
+### How to run it
+1. Open the `preferences.html` file in your web browser (double-click it or right-click and choose “Open with browser”).
+2. You will see four text fields and a **Save preferences** button.
+
+### How to use and test it
+1. Fill in all four fields (all are required).
+2. Click **Save preferences**.
+3. A **Preferences summary** box on the same page updates immediately with what you saved.
+4. Refresh the page; your saved values should still appear because they are stored in your browser’s `localStorage`.
+5. Edit any value and click **Save preferences** again to update both the stored data and the summary.
+
+That’s it—no setup, servers, or installs needed.

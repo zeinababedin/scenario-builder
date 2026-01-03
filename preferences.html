@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scenario Builder Preferences</title>
+  <style>
+    /* Basic, beginner-friendly styling to keep the page readable. */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+      background: #f7f7f7;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .error {
+      color: #c0392b;
+      font-size: 14px;
+      margin-top: 4px;
+      min-height: 18px; /* keeps space reserved even when empty */
+    }
+
+    .actions {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 16px;
+      background: #2d89ef;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #1b62b3;
+    }
+
+    .summary {
+      margin-top: 28px;
+      padding: 16px;
+      border: 1px solid #dfe6e9;
+      border-radius: 6px;
+      background: #f9fbfd;
+    }
+
+    .summary h2 {
+      margin-top: 0;
+    }
+
+    .summary-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .summary-list li {
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Preferences</h1>
+    <p>
+      Enter who you are creating content for, the tone you want to use,
+      the format you are targeting, and the language. All fields are required.
+    </p>
+
+    <form id="preferences-form" novalidate>
+      <div class="field">
+        <label for="audience">Audience</label>
+        <input type="text" id="audience" name="audience" placeholder="e.g., college students on TikTok" />
+        <div class="error" id="audience-error"></div>
+      </div>
+
+      <div class="field">
+        <label for="tone">Tone</label>
+        <input type="text" id="tone" name="tone" placeholder="e.g., friendly and encouraging" />
+        <div class="error" id="tone-error"></div>
+      </div>
+
+      <div class="field">
+        <label for="format">Format</label>
+        <input type="text" id="format" name="format" placeholder="e.g., short vertical video" />
+        <div class="error" id="format-error"></div>
+      </div>
+
+      <div class="field">
+        <label for="language">Language</label>
+        <input type="text" id="language" name="language" placeholder="e.g., English" />
+        <div class="error" id="language-error"></div>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Save preferences</button>
+      </div>
+    </form>
+
+    <div class="summary" id="preferences-summary" aria-live="polite">
+      <h2>Preferences summary</h2>
+      <p id="summary-empty">Nothing saved yet. Fill out the form and click "Save preferences."</p>
+      <ul class="summary-list" id="summary-list" hidden>
+        <li><strong>Audience:</strong> <span id="summary-audience"></span></li>
+        <li><strong>Tone:</strong> <span id="summary-tone"></span></li>
+        <li><strong>Format:</strong> <span id="summary-format"></span></li>
+        <li><strong>Language:</strong> <span id="summary-language"></span></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Store the form and summary elements so we can use them later.
+    const form = document.getElementById('preferences-form');
+    const fields = ['audience', 'tone', 'format', 'language'];
+
+    // This function reads preferences from localStorage and fills the form and summary.
+    function loadPreferences() {
+      const saved = localStorage.getItem('preferences');
+      if (!saved) {
+        return;
+      }
+
+      const data = JSON.parse(saved);
+      fields.forEach((fieldName) => {
+        const input = document.getElementById(fieldName);
+        if (data[fieldName] && input) {
+          input.value = data[fieldName];
+        }
+      });
+
+      updateSummary(data);
+    }
+
+    // Helper: shows the summary with the provided values.
+    function updateSummary(data) {
+      const summaryList = document.getElementById('summary-list');
+      const emptyMessage = document.getElementById('summary-empty');
+
+      // Update each summary line.
+      document.getElementById('summary-audience').textContent = data.audience;
+      document.getElementById('summary-tone').textContent = data.tone;
+      document.getElementById('summary-format').textContent = data.format;
+      document.getElementById('summary-language').textContent = data.language;
+
+      // Show the list and hide the empty message.
+      summaryList.hidden = false;
+      emptyMessage.hidden = true;
+    }
+
+    // Helper: clears error messages before we validate again.
+    function clearErrors() {
+      fields.forEach((fieldName) => {
+        const errorBox = document.getElementById(`${fieldName}-error`);
+        errorBox.textContent = '';
+      });
+    }
+
+    // Helper: validates that all fields are non-empty.
+    function validate(data) {
+      let isValid = true;
+      clearErrors();
+
+      fields.forEach((fieldName) => {
+        if (!data[fieldName] || !data[fieldName].trim()) {
+          const errorBox = document.getElementById(`${fieldName}-error`);
+          errorBox.textContent = 'This field is required.';
+          isValid = false;
+        }
+      });
+
+      return isValid;
+    }
+
+    // When the user submits the form, validate and save to localStorage.
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      // Build a simple object from the input values.
+      const preferences = {};
+      fields.forEach((fieldName) => {
+        const input = document.getElementById(fieldName);
+        preferences[fieldName] = input.value.trim();
+      });
+
+      if (!validate(preferences)) {
+        return; // Stop if any field is empty.
+      }
+
+      // Save to localStorage so it persists after refresh.
+      localStorage.setItem('preferences', JSON.stringify(preferences));
+
+      // Update the summary right away so the user sees their saved values.
+      updateSummary(preferences);
+    });
+
+    // Clear errors as the user types to give immediate feedback.
+    fields.forEach((fieldName) => {
+      const input = document.getElementById(fieldName);
+      input.addEventListener('input', () => {
+        const errorBox = document.getElementById(`${fieldName}-error`);
+        if (input.value.trim()) {
+          errorBox.textContent = '';
+        }
+      });
+    });
+
+    // Load any saved data as soon as the page is ready.
+    loadPreferences();
+  </script>
+</body>
+</html>
